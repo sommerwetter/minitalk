@@ -6,7 +6,7 @@
 /*   By: marmoral <marmoral@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 21:05:41 by marmoral          #+#    #+#             */
-/*   Updated: 2023/03/25 16:40:33 by marmoral         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:10:47 by marmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,13 @@ static void	client_sig(int signal, siginfo_t *info, void *context)
 	kill(pid, SIGUSR2);
 }
 
+/*
+	sigaction is safer than signal but therefore has a little more syntax.
+	sigemptyset initializes all sig_action values to 0;
+	SA_SIGINFO Flag provides us more information to pass through the sig_handler
+	thus allowing us in this example, to be able to extract the pid of the 
+	client.
+*/
 int	main(void)
 {
 	struct sigaction	sa;
