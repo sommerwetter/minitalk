@@ -6,17 +6,24 @@
 /*   By: marmoral <marmoral@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 20:47:04 by marmoral          #+#    #+#             */
-/*   Updated: 2023/03/28 16:29:38 by marmoral         ###   ########.fr       */
+/*   Updated: 2023/03/29 00:38:50 by marmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minitalk.h"
 
 /*
+	global variable to wait until the server sends a signal back.
+	('g_' because norminette)
+*/
+static int	g_alright;
+/*
 	Message to the Client from the server.
 */
+
 static void	server_sig(int n)
 {
+	g_alright = 1;
 	if (n == SIGUSR1)
 		ft_putstr_fd("Message received!", 1);
 }
@@ -33,17 +40,23 @@ static void	server_sig(int n)
  	By reducing the amount of shifts (reducing i_bit) we move each
 	value (after the leftmost value) up to the righmost place.
 */
-
 /*
-The >> operator is the bitwise right shift operator. It shifts the bits of the left
-operand (c in this case) to the right by the number of bits specified by the right operand
-(i_bit in this case).
-The & operator is the bitwise AND operator. It performs a bitwise AND operation between the
-left operand and the right operand. In this case, the right operand is the value 1.
-The value of the expression (c >> i_bit) & 1 will be either 0 or 1, depending on the value of
-the bit at position i_bit in c.
-In other words, this line of code extracts the bit at position i_bit from the variable c.
-It does this by shifting c to the right by i_bit bits, which moves the bit at position i_bit to the rightmost position. Then, the bitwise AND operation with 1 extracts that rightmost bit, because 1 has a 1 bit in the rightmost position and 0 bits everywhere else.
+The >> operator is the bitwise right shift operator. 
+It shifts the bits of the left operand (c in this case) to the right by 
+the number of bits specified by the right operand (i_bit in this case).
+The & operator is the bitwise AND operator. It performs a bitwise AND operation 
+between the left operand and the right operand. In this case, the right operand 
+is the value 1.
+*/
+/*
+The value of the expression (c >> i_bit) & 1 will be either 0 or 1,
+depending on the value of the bit at position i_bit in c.
+In other words, this line of code extracts the bit at position i_bit from
+the variable c.
+It does this by shifting c to the right by i_bit bits, which moves the bit at
+position i_bit to the rightmost position.
+Then, the bitwise AND operation with 1 extracts that rightmost bit,
+because 1 has a 1 bit in the rightmost position and 0 bits everywhere else.
 */
 static void	c2b(unsigned int c, int pid)
 {
@@ -56,7 +69,9 @@ static void	c2b(unsigned int c, int pid)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		usleep(500);
+		while (!g_alright)
+			usleep(500);
+		g_alright = 0;
 		i_bit--;
 	}
 }
@@ -71,7 +86,6 @@ int	main(int argc, char *argv[])
 	{
 		i_byte = 0;
 		pid = ft_atoi(argv[1]);
-		sigemptyset(&sa.sa_mask);
 		sa.sa_flags = SA_RESTART;
 		sa.sa_handler = &server_sig;
 		if (sigaction(SIGUSR1, &sa, NULL) == -1)

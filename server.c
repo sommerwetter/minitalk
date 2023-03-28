@@ -6,7 +6,7 @@
 /*   By: marmoral <marmoral@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 21:05:41 by marmoral          #+#    #+#             */
-/*   Updated: 2023/03/27 14:10:47 by marmoral         ###   ########.fr       */
+/*   Updated: 2023/03/29 00:33:26 by marmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	main(void)
 	ft_putnbr_fd(getpid(), 1);
 	ft_putstr_fd(" :Server PID\n", 1);
 	ft_putstr_fd("Message: ", 1);
-	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART | SA_SIGINFO;
 	sa.sa_sigaction = client_sig;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
