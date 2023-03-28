@@ -1,5 +1,5 @@
 # minitalk
 
-Coding a small data exchange program using UNIX signals
+Coding a small text exchange program using UNIX signals
 
 125% Passed (with Bonus)
