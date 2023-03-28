@@ -6,7 +6,7 @@
 /*   By: marmoral <marmoral@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 20:47:04 by marmoral          #+#    #+#             */
-/*   Updated: 2023/03/25 16:39:29 by marmoral         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:21:18 by marmoral         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int argc, char *argv[])
 	}
 	else
 	{
-		ft_putendl_fd("ERROR", 1);
+		ft_putendl_fd("ERROR - invalid or not enough variables", 1);
 		return (1);
 	}
 }
